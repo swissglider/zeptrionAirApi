@@ -25,19 +25,7 @@ With the ZeptrionAirChannel Class you can read the status
 and control the device
 
 Sample to use it:
-'''python
-    from zeptrionAirApi import ZeptrionAirHub
-
-    hub = ZeptrionAirHub(5) #Initialize the ZeptrionAIrHub and browse for 5sec
-    allZeptrionPanels = hub.getAllPanels() #returns all found panels
-    allZeptrionChannels = hub.getAllChannels() #returns all found channels
-    allLightChannels = hub.getAllLightChannels() #returns all found channels that are Light switches
-    allGroups = hub.getAllGroup() #returns all groups, that have been defined on the zeptrion app
-    for group in allGroups:
-        print("Channels in Group: " + str(group))
-        print(hub.getAllChannelsByGroup(group)) #returns all channles that are defined for that froup
-'''
-
+https://github.com/swissglider/zeptrionAirApi
 """
 
 import time
