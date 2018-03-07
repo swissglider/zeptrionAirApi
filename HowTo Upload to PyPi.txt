@@ -11,4 +11,4 @@ python3 setup.py sdist
 python3 setup.py bdist_wheel --universal
 python3 setup.py check -r -s
 
-twine upload dist/*
+twine upload dist/* 
