@@ -102,4 +102,4 @@ ENV/
 
 # own
 tox.ini
-HowTo Upload to PyPi.txt
+HowToUploadToPyPi.txt
