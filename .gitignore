@@ -103,3 +103,4 @@ ENV/
 # own
 tox.ini
 HowToUploadToPyPi.txt
+MANIFEST.in
