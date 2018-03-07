@@ -100,3 +100,4 @@ ENV/
 # mypy
 .mypy_cache/
 tox.ini
+HowTo Upload to PyPi.txt
