@@ -19,7 +19,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name = 'zeptrionAirApi',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    version = '1.0.0.dev1',
+    version = '1.0.1',
     description = "This are the Classes to use the Zeptrion Air Lights etc.",
     long_description=long_description,
     author = "Swissglider",
@@ -28,7 +28,7 @@ setup(
     keywords = "zeptrion zeptrion-air Light-Switch Switch Blind-Switch",
     install_requires=['requests', 'zeroconf', ],
     classifiers = [
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: MIT License",
