@@ -104,3 +104,4 @@ ENV/
 tox.ini
 HowToUploadToPyPi.txt
 MANIFEST.in
+.pytest_cache/v/cache/lastfailed

@@ -32,7 +32,8 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
     ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
 )
