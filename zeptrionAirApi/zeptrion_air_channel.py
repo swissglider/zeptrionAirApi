@@ -39,6 +39,11 @@ class ZeptrionAirChannel:
         '''
 
     @property
+    def channel_uniq_id(self):
+        """Return the uniq ID from the channel."""
+        return str(self.panel_name)+str(self.channel_id)
+
+    @property
     def channel_id(self):
         """Return the ID from the channel."""
         return self._channel_info['channel_id']
