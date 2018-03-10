@@ -98,6 +98,13 @@ class TestZeptrionAir(unittest.TestCase):
         channel.panel_type
         self.assertTrue(True)
 
+    def test_channel_uniq_id(self):
+        ''' Test if channel_uniq_id returns not None. '''
+        channels = self.hub.get_all_channels()
+        channel = channels[0]
+        channel.channel_uniq_id
+        self.assertTrue(True)
+
     def test_channel_panel_ip(self):
         ''' Test if panel_ip returns not None. '''
         channels = self.hub.get_all_channels()
