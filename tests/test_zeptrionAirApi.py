@@ -1,4 +1,5 @@
 import unittest
+import time
 from zeptrionAirApi import ZeptrionAirHub
 
 class TestZeptrionAir(unittest.TestCase):
@@ -127,26 +128,53 @@ class TestZeptrionAir(unittest.TestCase):
         ''' Test if turn_on_light returns not None. '''
         channels = self.hub.get_all_light_channels()
         channel = channels[0]
-        channel.turn_on_light()
+        channel.channel_light_state
+        channel.light_controller.turn_on_light()
         self.assertTrue(True)
 
     def test_channel_turn_off_light(self):
         ''' Test if turn_off_light returns not None. '''
         channels = self.hub.get_all_light_channels()
         channel = channels[0]
-        channel.turn_off_light()
+        channel.light_controller.turn_off_light()
         self.assertTrue(True)
 
     def test_channel_toggle_light(self):
         ''' Test if toggle_light returns not None. '''
         channels = self.hub.get_all_light_channels()
         channel = channels[0]
-        channel.toggle_light()
+        channel.light_controller.toggle_light()
         self.assertTrue(True)
 
     def test_control_light_with_cat5(self):
         ''' Test if toggle_light returns not None. '''
         channels = self.hub.get_all_channels_by_cat(5)
         channel = channels[0]
-        channel.toggle_light()
+        channel.light_controller.toggle_light()
         self.assertTrue(True)
+    
+    def test_blind_controll_down_up(self):
+        ''' Test blind controller move down/tilt/up. '''
+        channels = self.hub.get_all_channels_by_cat(5)
+        channel = channels[0]
+        channel.channel_blind_state
+        channel.blind_controller.move_down_blind()
+        time.sleep(2)
+        channel.blind_controller.stop_blind()
+        channel.blind_controller.blind_is_stoped()
+
+        channel.blind_controller.tilt_up_blind()
+        time.sleep(2)
+
+        channel.blind_controller.tilt_down_blind()
+        time.sleep(2)
+
+        channel.blind_controller.go_to_position(80)
+        time.sleep(2)
+        channel.blind_controller.go_to_position(50)
+        time.sleep(2)
+        channel.blind_controller.go_to_position(60)
+        time.sleep(2)
+        channel.blind_controller.move_up_blind()
+        self.assertTrue(True)
+
