@@ -75,7 +75,7 @@ class ZeptrionAirChannelBlindController:
             time.sleep(float(0.2))
             while self.update():
                 time.sleep(float(0.2))
-            payload = "cmd=clos"
+            payload = "cmd=close"
             self._control_blind(payload)
             sleep_time = float(53.7/100*postion)
         elif postion < self._blind_position:
