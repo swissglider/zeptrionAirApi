@@ -65,25 +65,27 @@ class ZeptrionAirChannelBlindController:
         Move blind to position.
 
         If position is not yet set, it goes first totally down
+        0 = open
+        100 = close
         """
         sleep_time = None
         if self._blind_position is None:
-            payload = "cmd=close"
+            payload = "cmd=open"
             self._control_blind(payload)
             time.sleep(float(0.2))
             while self.update():
                 time.sleep(float(0.2))
-            payload = "cmd=open"
+            payload = "cmd=clos"
             self._control_blind(payload)
-            sleep_time = float(55.3/100*postion)
+            sleep_time = float(53.7/100*postion)
         elif postion < self._blind_position:
             payload = "cmd=open"
             self._control_blind(payload)
-            sleep_time = float(53.7/100*(self._blind_position-postion))
+            sleep_time = float(55.3/100*(self._blind_position-postion))
         elif postion > self._blind_position:
             payload = "cmd=close"
             self._control_blind(payload)
-            sleep_time = float(55.3/100*(postion-self._blind_position))
+            sleep_time = float(53.7/100*(postion-self._blind_position))
         time.sleep(sleep_time)
         payload = "cmd=stop"
         self._control_blind(payload)
