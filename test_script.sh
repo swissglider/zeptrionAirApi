@@ -13,10 +13,12 @@ echo "  ### pycodestyle --first test - "+$1
 pycodestyle --first $1
 
 echo "  ### pylint 3.6 test - "+$1
-/Users/diener/Library/Python/3.6/bin/pylint $1
+/Users/diener/Library/Python/3.6/bin/pylint ./zeptrionAirApi
 
-#echo "  ### python3 setup.py test"
-#python3 setup.py test
+# echo "  ### python3 setup.py test"
+# python3 setup.py test
 
 echo "  ### pytest and coverage"
 py.test --cov ./zeptrionAirApi
+
+# py.test -s --cov-report html --cov ./zeptrionAirApi

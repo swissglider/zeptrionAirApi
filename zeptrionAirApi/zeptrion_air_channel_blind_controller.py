@@ -7,7 +7,6 @@ https://github.com/swissglider/zeptrionAirApi
 
 import time
 import requests
-import xml.etree.ElementTree as ET
 
 
 class ZeptrionAirChannelBlindController:
@@ -18,12 +17,9 @@ class ZeptrionAirChannelBlindController:
     https://github.com/swissglider/zeptrionAirApi
     """
 
-    def __init__(
-            self, channel_cat, channel_id, panel_url):
+    def __init__(self, helper):
         """Init the ZeptrionAirChannelBlindController."""
-        self._panel_url = panel_url
-        self._channel_cat = channel_cat
-        self._channel_id = channel_id
+        self.helper = helper
         self._blind_position = None
         self._state = None
 
@@ -92,21 +88,12 @@ class ZeptrionAirChannelBlindController:
         self._blind_position = postion
 
     def _control_blind(self, payload):
-        if self._channel_cat == '5':
-            import requests
-            full_url = self._panel_url
-            full_url += "/zrap/chctrl/" + self._channel_id
+        if self.helper.channel_cat == '5':
+            full_url = self.helper.panel_url
+            full_url += "/zrap/chctrl/" + self.helper.channel_id
             requests.post(full_url, data=payload)
             self._state = self.update()
 
     def update(self):
         """Update the real status of the channel switch."""
-        full_url = self._panel_url
-        full_url += "/zrap/chscan/" + self._channel_id
-        device_info_response = requests.get(full_url)
-        if device_info_response.status_code == 200:
-            root = ET.fromstring(device_info_response.text)
-            if root[0][0].text == '100':
-                return True
-            return False
-        return False  # pragma: no cover
+        return self.helper.update()

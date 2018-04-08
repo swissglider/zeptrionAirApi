@@ -27,6 +27,8 @@ class ZeptrionAirPanel:
         self._panel_url = url
         self._panel_channels = []
         self.__read_panel_channels__()
+        self._has_smart_buttons = False
+        self.__read_smart_buttons__()
 
     @property
     def panel_name(self):
@@ -57,6 +59,11 @@ class ZeptrionAirPanel:
     def panel_channels(self):
         """Return the Channels from the panel as List."""
         return self._panel_channels
+
+    @property
+    def has_smart_buttons(self):
+        """Return the Smart Buttons from the panel as List."""
+        return self._has_smart_buttons
 
     def __repr__(self):
         """Return a String representing the ZeptrionAirPanel."""
@@ -105,3 +112,99 @@ class ZeptrionAirPanel:
             root = ET.fromstring(device_info_response.text)
             return root[0].text
         return ''  # pragma: no cover
+
+    def __read_smart_buttons__(self):
+        """Return the Smart Buttons that panel has."""
+        import requests
+        import json
+        device_info_response = requests.get(
+            self.panel_url + "/zapi/smartfront/id")
+
+        if device_info_response.status_code == 200:
+            # button_info = json.loads(device_info_response.text)
+
+            device_led_response = requests.get(
+                self.panel_url + "/zapi/smartfront/led")
+            if device_led_response.status_code == 200:
+                buttons = json.loads(device_led_response.text)
+                for button in buttons:
+                    if(button):
+                        self._has_smart_buttons = True
+                        return
+
+    async def programm_btn(self, prog_elements):  # noqa: D301
+        """
+        Set the pressed Smart Buttons with the given program.
+
+            :param prog_elements: -- dictornary with the following parameter
+                :prog_elements['prog_req_type']
+                    --> Type for the Webservice to be called
+                    --> ex. POST/GET/PUT/DELETE
+                :prog_elements['prog_url']
+                    --> Url of the Webservice to be called
+                :prog_elements['prog_path']
+                    --> Path
+                :prog_elements['prog_typ']
+                    --> Type of the Webservice to be called
+                    --> ex. application/json
+                :prog_elements['prog_header_field']
+                    --> individual HTTP header field
+                    --> ex. "SOAPACTION:http://test/foo#MyMessage\r\n"
+                :prog_elements['prog_port']
+                    --> Port of the Webservice to be called
+                :prog_elements['prog_body']
+                    --> Body of the Webservice to be called
+        """
+        import aiohttp
+        import requests
+        import json
+        url = self.panel_url + "/zapi/smartbt/prgm"
+        payload = {'on': True}
+        headers = {'content-type': 'application/json'}
+        requests.post(url, data=json.dumps(payload), headers=headers)
+        url = self.panel_url + "/zapi/smartbt/prgn"
+        prgn_response = requests.get(url)
+        if prgn_response.text and prgn_response.status_code == 200:
+            result = json.loads(prgn_response.text)
+            if result['prg']:
+                async with aiohttp.ClientSession() as session:
+                    url = self.panel_url + "/zapi/smartbt/prgs"
+                    payload = [{
+                        'req': prog_elements['prog_req_type'],
+                        'loc': prog_elements['prog_url'],
+                        'pth': prog_elements['prog_path'],
+                        'typ': prog_elements['prog_typ'],
+                        'hdr': prog_elements['prog_header_field'],
+                        'prt': prog_elements['prog_port'],
+                        'bdy': prog_elements['prog_body']
+                    }]
+                    headers = {'content-type': 'application/json'}
+                    async with session.post(
+                        url,
+                        data=json.dumps(payload),
+                        headers=headers
+                    ) as response:
+                        await response.text()
+                        if response.status == 200:
+                            return {
+                                'changed': True,
+                                'tried to change': False,
+                                'status_code': response.status,
+                                'text': response.text(),
+                                'response': response
+                            }
+                        return {
+                            'changed': False,
+                            'tried to change': True,
+                            'status_code': response.status,
+                            'text': response.text(),
+                            'response': response
+                        }  # pragma: no cover
+        else:
+            return {
+                'changed': False,
+                'tried to change': True,
+                'status_code': prgn_response.status_code,
+                'text': prgn_response.text,
+                'response': prgn_response
+            }  # pragma: no cover

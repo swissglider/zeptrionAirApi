@@ -1,4 +1,6 @@
-"""A setuptools based setup module.
+"""
+A setuptools based setup module.
+
 See:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
@@ -17,17 +19,17 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name = 'zeptrionAirApi',
+    name='zeptrionAirApi',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    version = '1.0.4',
-    description = "This are the Classes to use the Zeptrion Air Lights etc.",
+    version='1.0.5',
+    description="This are the Classes to use the Zeptrion Air Lights etc.",
     long_description=long_description,
-    author = "Swissglider",
-    author_email = "swissglider@mailschweiz.com",
-    url = "https://github.com/swissglider/zeptrionAirApi",
-    keywords = "zeptrion zeptrion-air Light-Switch Switch Blind-Switch",
+    author="Swissglider",
+    author_email="swissglider@mailschweiz.com",
+    url="https://github.com/swissglider/zeptrionAirApi",
+    keywords="zeptrion zeptrion-air Light-Switch Switch Blind-Switch",
     install_requires=['requests', 'zeroconf', ],
-    classifiers = [
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -35,5 +37,5 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pytest-asyncio'],
 )

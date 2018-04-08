@@ -5,8 +5,13 @@ For more details about this Class, please refer to the documentation at
 https://github.com/swissglider/zeptrionAirApi
 """
 
-from .zeptrion_air_channel_blind_controller import ZeptrionAirChannelBlindController  # noqa: E501
-from .zeptrion_air_channel_light_controller import ZeptrionAirChannelLightController  # noqa: E501
+from .zeptrion_air_channel_blind_controller \
+    import ZeptrionAirChannelBlindController
+from .zeptrion_air_channel_light_controller \
+    import ZeptrionAirChannelLightController
+from .zeptrion_air_channel_update_helper \
+    import ZeptrionAirChannelUpdatHelper \
+    as Helper
 
 
 class ZeptrionAirChannel:
@@ -33,14 +38,17 @@ class ZeptrionAirChannel:
         """
         self._channel_info = channel_info
         self._panel = panel
+        helper = Helper(
+            self._channel_info['channel_cat'],
+            self._channel_info['channel_id'],
+            self._panel.panel_url
+            )
         self._blind_controller = ZeptrionAirChannelBlindController(
-            self._channel_info['channel_cat'],
-            self._channel_info['channel_id'],
-            self._panel.panel_url)
+            helper
+        )
         self._light_controller = ZeptrionAirChannelLightController(
-            self._channel_info['channel_cat'],
-            self._channel_info['channel_id'],
-            self._panel.panel_url)
+            helper
+        )
         '''
         Cat:
             -1: Not configured
@@ -51,7 +59,7 @@ class ZeptrionAirChannel:
     @property
     def channel_uniq_id(self):
         """Return the uniq ID from the channel."""
-        return str(self.panel_name)+str(self.channel_id)
+        return str(self._panel.panel_name)+str(self.channel_id)
 
     @property
     def channel_id(self):
@@ -84,29 +92,9 @@ class ZeptrionAirChannel:
         return self._channel_info['channel_cat']
 
     @property
-    def panel_name(self):
-        """Return the Panel-Name from the channel."""
-        return self._panel.panel_name
-
-    @property
-    def panel_type(self):
-        """Return the Panel-Type from the channel."""
-        return self._panel.panel_type
-
-    @property
-    def panel_ip(self):
-        """Return the IP from the channel/panel."""
-        return self._panel.panel_ip
-
-    @property
-    def panel_port(self):
-        """Return the Port from the channel/panel."""
-        return self._panel.panel_port
-
-    @property
-    def panel_url(self):
-        """Return the URL from the channel/panel."""
-        return self._panel.panel_url
+    def panel(self):
+        """Return the Panel from the button."""
+        return self._panel
 
     @property
     def channel_blind_state(self):
@@ -136,6 +124,6 @@ class ZeptrionAirChannel:
         return_str += "\tIcon: " + str(self.channel_icon) + '\n'
         return_str += "\tType: " + str(self.channel_type) + '\n'
         return_str += "\tCat: " + str(self.channel_cat) + '\n'
-        return_str += "\tIP: " + str(self.panel_ip) + '\n'
+        return_str += "\tIP: " + str(self._panel.panel_ip) + '\n'
         return_str += '\n'
         return return_str

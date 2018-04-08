@@ -1,16 +1,22 @@
+"""This is the test to play around."""
+
 import requests
 import xml.etree.ElementTree as ET
 import time
 
 current_position = None
 
+
 def get_state():
+    """Get the state."""
     full_url = "http://192.168.86.114/zrap/chscan/ch1"
     device_info_response = requests.get(full_url)
     root = ET.fromstring(device_info_response.text)
     return str(root[0][0].text)
 
+
 def count_time_till_stop():
+    """Count the time till stop."""
     start = time.time()
     time.sleep(float(0.5))
     while(get_state() != '0'):
@@ -18,10 +24,12 @@ def count_time_till_stop():
     end = time.time()
     print(end - start)
 
+
 def go_to_position(postion):
+    """Go to position."""
     sleep_time = None
     global current_position
-    if  current_position is None:
+    if current_position is None:
         payload = "cmd=close"
         full_url = "http://192.168.86.114/zrap/chctrl/ch1"
         requests.post(full_url, data=payload)
@@ -42,19 +50,19 @@ def go_to_position(postion):
         full_url = "http://192.168.86.114/zrap/chctrl/ch1"
         requests.post(full_url, data=payload)
         sleep_time = float(55.3/100*(postion-current_position))
-    
     time.sleep(sleep_time)
     payload = "cmd=stop"
     full_url = "http://192.168.86.114/zrap/chctrl/ch1"
     requests.post(full_url, data=payload)
     current_position = postion
 
+
 device_info_response = requests.get("http://192.168.86.114/zrap/chdes")
 
-#payload = "cmd=open"
-#full_url = "http://192.168.86.114/zrap/chctrl/ch1"
-#device_info_response = requests.post(full_url, data=payload)
-#print(device_info_response)
+# payload = "cmd=open"
+# full_url = "http://192.168.86.114/zrap/chctrl/ch1"
+# device_info_response = requests.post(full_url, data=payload)
+# print(device_info_response)
 
 go_to_position(50)
 time.sleep(float(2))
@@ -67,4 +75,3 @@ time.sleep(float(2))
 go_to_position(10)
 time.sleep(float(2))
 go_to_position(0)
-

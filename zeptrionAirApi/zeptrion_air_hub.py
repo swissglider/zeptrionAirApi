@@ -129,3 +129,43 @@ class ZeptrionAirHub:
             for temp_channel in temp_channels:
                 groups.append(temp_channel.channel_group)
         return list(set(groups))
+
+    def get_panels_with_smart_button(self):
+        """Return all Panels that have smart buttons."""
+        panel_with_smt_btn = []
+        for panel in self.get_all_panels():
+            if panel.has_smart_buttons:
+                panel_with_smt_btn.append(panel)
+        return panel_with_smt_btn
+
+    def programm_smart_btn(self, prog_elements):  # noqa: D301
+        """
+        Set the pressed Smart Buttons with the given program.
+
+            :param prog_elements: -- dictornary with the following parameter
+                :prog_elements['prog_req_type']
+                    --> Type for the Webservice to be called
+                    --> ex. POST/GET/PUT/DELETE
+                :prog_elements['prog_url']
+                    --> Url of the Webservice to be called
+                :prog_elements['prog_path']
+                    --> Path
+                :prog_elements['prog_typ']
+                    --> Type of the Webservice to be called
+                    --> ex. application/json
+                :prog_elements['prog_header_field']
+                    --> individual HTTP header field
+                    --> ex. 'SOAPACTION:http://test/foo#MyMessage\r\n'
+                :prog_elements['prog_port']
+                    --> Port of the Webservice to be called
+                :prog_elements['prog_body']
+                    --> Body of the Webservice to be called
+        """
+        import asyncio
+        program_mode = [
+            panel.programm_btn(prog_elements)
+            for panel in self.get_panels_with_smart_button()
+        ]
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(asyncio.gather(*program_mode))
+        return result
