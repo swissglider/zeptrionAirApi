@@ -1,41 +1,40 @@
 """
-Support for ZeptrionAirChannel.
+Support for zeptrion_air_api.smt_btn.
 
 For more details about this Class, please refer to the documentation at
 https://github.com/swissglider/zeptrionAirApi
 """
-
 import time
-import requests
+from .button import Button
 
 
-class ZeptrionAirChannelBlindController:
-    """
-    Support for ZeptrionAirChannel.
+class BlindButton(Button):
+    """The Smart Button represents a Zeptrion Air Smartbutton."""
 
-    For more details about this Class, please refer to the documentation at
-    https://github.com/swissglider/zeptrionAirApi
-    """
-
-    def __init__(self, helper):
-        """Init the ZeptrionAirChannelBlindController."""
-        self.helper = helper
+    def __init__(self, panel, info):
+        """Initialize the Smart Button."""
         self._blind_position = None
-        self._state = None
+        super().__init__(panel, info, is_smart_button=False)
+
+    def change_info_configuration(
+            self, name, group, friendly_name
+    ):
+        """Change the Configuration."""
+        pass
 
     def move_up_blind(self):
         """Move up blind."""
-        self._control_blind("cmd=open")
+        self._control("cmd=open")
         self._blind_position = None
 
     def move_down_blind(self):
         """Move down blind."""
-        self._control_blind("cmd=close")
+        self._control("cmd=close")
         self._blind_position = None
 
     def stop_blind(self):
         """Move stop blind."""
-        self._control_blind("cmd=stop")
+        self._control("cmd=stop")
         self._blind_position = None
 
     def tilt_up_blind(self):
@@ -54,7 +53,7 @@ class ZeptrionAirChannelBlindController:
 
     def blind_is_stoped(self):
         """Tilt up blind."""
-        return self.update()
+        return self._update()
 
     def go_to_position(self, postion):
         """
@@ -67,33 +66,22 @@ class ZeptrionAirChannelBlindController:
         sleep_time = None
         if self._blind_position is None:
             payload = "cmd=open"
-            self._control_blind(payload)
+            self._control(payload)
             time.sleep(float(0.2))
-            while self.update():
+            while self._update():
                 time.sleep(float(0.2))
             payload = "cmd=close"
-            self._control_blind(payload)
+            self._control(payload)
             sleep_time = float(53.7/100*postion)
         elif postion < self._blind_position:
             payload = "cmd=open"
-            self._control_blind(payload)
+            self._control(payload)
             sleep_time = float(55.3/100*(self._blind_position-postion))
         elif postion > self._blind_position:
             payload = "cmd=close"
-            self._control_blind(payload)
+            self._control(payload)
             sleep_time = float(53.7/100*(postion-self._blind_position))
         time.sleep(sleep_time)
         payload = "cmd=stop"
-        self._control_blind(payload)
+        self._control(payload)
         self._blind_position = postion
-
-    def _control_blind(self, payload):
-        if self.helper.channel_cat == '5':
-            full_url = self.helper.panel_url
-            full_url += "/zrap/chctrl/" + self.helper.channel_id
-            requests.post(full_url, data=payload)
-            self._state = self.update()
-
-    def update(self):
-        """Update the real status of the channel switch."""
-        return self.helper.update()

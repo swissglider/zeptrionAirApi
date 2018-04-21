@@ -21,14 +21,14 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='zeptrionAirApi',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    version='1.0.5.1',
+    version='1.1.0.0',
     description="This are the Classes to use the Zeptrion Air Lights etc.",
     long_description=long_description,
     author="Swissglider",
     author_email="swissglider@mailschweiz.com",
     url="https://github.com/swissglider/zeptrionAirApi",
     keywords="zeptrion zeptrion-air Light-Switch Switch Blind-Switch",
-    install_requires=['requests', 'zeroconf', ],
+    install_requires=['requests', 'zeroconf', 'websockets'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",

@@ -109,3 +109,7 @@ MANIFEST.in
 # vscode
 launch.json
 settings.json
+.pytest_cache/v/cache/nodeids
+
+# pytest_cache
+.pytest_cache/

@@ -1,7 +1,7 @@
 import unittest
 import time
 import json
-from zeptrionAirApi import ZeptrionAirHub
+from zeptrion_air_api import Hub
 
 
 class TestZeptrionAir(unittest.TestCase):
