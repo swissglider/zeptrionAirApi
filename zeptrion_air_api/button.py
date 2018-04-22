@@ -112,7 +112,7 @@ class Button:
             payload = payload[:-1]
             full_url = self.panel_url
             full_url += "/zrap/chdes/" + self.id
-            res = requests.post(full_url, data=payload)
+            requests.post(full_url, data=payload)
 
     def _control(self, payload):
         """Send controll command to zeptrion air device."""
