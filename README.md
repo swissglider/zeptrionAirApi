@@ -1,47 +1,62 @@
-## ZeptrionAir
+## Zeptrion Air
 
 This are the Classes to use the Zeptrion Air Lights etc. Zeptrion Air is
 a product from Feller. Zeptrion Air Panel are switches for Light, Blinds
 etc. A panel can have up to 8 switches. Each of this switches are called
-Channels.
+Button.
 
-### 1) ZeptrionAir Hub
+### 1) Hub
 
 The ZeptrionAir Hub handles all the ZeptrionAir Panel. The Hub is
 searching (browse) the panels with mDNS (zeroconf). If panels are found
 with mDNS the Hub is requesting the panels for all additional needed
 informations
 
-### 2) ZeptrionAirPanel
+### 2) Panel
 
-ZeptrionAirPanel is the panel that can have up to 8 channels (Switches)
+Panel is the panel that can have up to 8 buttons (Switches)
 
-### 3) ZeptrionAirChannel
+### 3) Button
 
-The ZeptrionAirChannel is on of the channel that are hold on a Panel A
-Channel is Switch for example for a Light or Blinds etc. With the
-ZeptrionAirChannel Class you can read the status and control the device
+The Button is on of the button that are hold on a Panel A
+Button is Switch for example for a Light or Blinds etc. With the
+Button Class you can read the status and control the device
+Button Status is handled with websocket and is implemented with asyncio
 
 ### Python compatibility
-Only working with Python 3 and above
+Only working with Python 3.6 and above
 
 ### Sample to use it:
 
 ``` python
-from zeptrionAirApi import ZeptrionAirHub
+import asyncio
+import time
+import json
+from zeptrion_air_api import Hub
 
-hub = ZeptrionAirHub(3) #Initialize the ZeptrionAIrHub and browse for 5sec
-allZeptrionPanels = hub.get_all_panels() #returns all found panels
-allZeptrionChannels = hub.get_all_channels() #returns all found channels
-allLightChannels = hub.get_all_light_channels() #returns all found channels that are Light switches
-allGroups = hub.get_all_group() #returns all groups, that have been defined on the zeptrion app
-for group in allGroups:
-    print("Channels in Group: " + str(group))
-    print(hub.get_all_channels_by_group(group)) #returns all channles that are defined for that group
+async def do_close(hub):
+    """Close the System."""
+    await hub.close()
 
-channels = hub.get_all_channels_by_cat(1) #returns all found channels that are Light switches --> Category 1
-channel = channels[0] #pick the first light
-channel.toggle_light() #toggle the light
-channel.turn_on_light() #turn the light on
-channel.turn_off_light() #turn the light off
+def press_info_handler(press_info):
+    """Handle if the button is pressed."""
+    print(press_info)
+
+def found_new_panels(panel):
+    """Handle if a new Zeptrion Air Panel is found."""
+    for button in panel.all_buttons:
+        if button:
+            button.listen_to(press_info_handler)
+
+if __name__ == '__main__':
+    """Init the main test."""
+    loop = asyncio.get_event_loop()
+    za_hub = Hub(loop, found_new_panels)
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print("Unregistering...")
+        loop.run_until_complete(do_close(za_hub))
+    finally:
+        loop.close()
 ```
