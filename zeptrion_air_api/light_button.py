@@ -15,10 +15,10 @@ class LightButton(Button):
         super().__init__(panel, info, is_smart_button=False)
 
     def change_info_configuration(
-            self, name, group, friendly_name
+            self, name, group
     ):
         """Change the Configuration."""
-        pass
+        super().change_info_configuration(name, group)
 
     def turn_on_light(self):
         """Turn the real light switch off."""

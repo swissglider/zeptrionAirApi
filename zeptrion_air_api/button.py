@@ -70,7 +70,7 @@ class Button:
     @property
     def type(self):
         """Return the Type from the channel."""
-        if self._info['icon']:
+        if self._info['type']:
             return self._info['type']
         return None
 
@@ -84,6 +84,11 @@ class Button:
         """Return the Panel from the button."""
         return self._panel
 
+    @property
+    def is_smart(self):
+        """Return the is_smart from the button."""
+        return self._is_smt_btn
+
     def __repr__(self):
         """Return a String representing the ZeptrionAirChannel."""
         return_str = "IP: " + str(self.panel_url)
@@ -94,26 +99,24 @@ class Button:
         return return_str
 
     def change_info_configuration(
-            self, name, group, friendly_name
+            self, name, group
     ):
         """Change the Configuration."""
-        if str(self.id) in ['1', '3', '5', '6']:
+        if str(self.cat) in ['1', '3', '5', '6']:
             payload = ''
             if name:
                 payload += 'name=' + str(name) + '&'
             if group:
-                payload += 'name=' + str(name) + '&'
-            if friendly_name:
-                payload += 'name=' + str(name) + '&'
+                payload += 'group=' + str(group) + '&'
 
             payload = payload[:-1]
             full_url = self.panel_url
-            full_url += "/zrap/chctrl/" + self.id
-            requests.post(full_url, data=payload)
+            full_url += "/zrap/chdes/" + self.id
+            res = requests.post(full_url, data=payload)
 
     def _control(self, payload):
         """Send controll command to zeptrion air device."""
-        if str(self.id) in ['1', '3', '5', '6']:
+        if str(self.cat) in ['1', '3', '5', '6']:
             full_url = self.panel_url
             full_url += "/zrap/chdes/" + self.id
             requests.post(full_url, data=payload)

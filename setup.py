@@ -21,14 +21,14 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='zeptrionAirApi',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    version='1.1.0.0',
+    version='1.1.0.1',
     description="This are the Classes to use the Zeptrion Air Lights etc.",
     long_description=long_description,
     author="Swissglider",
     author_email="swissglider@mailschweiz.com",
     url="https://github.com/swissglider/zeptrionAirApi",
     keywords="zeptrion zeptrion-air Light-Switch Switch Blind-Switch",
-    install_requires=['requests', 'zeroconf', 'websockets'],
+    install_requires=['requests', 'zeroconf', 'websockets', 'asyncio'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -36,6 +36,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
     ],
-    setup_requires=['pytest-runner'],
+    setup_requires=['pytest-runner', 'pylint'],
     tests_require=['pytest', 'pytest-asyncio'],
 )

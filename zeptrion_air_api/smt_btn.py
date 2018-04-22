@@ -46,7 +46,7 @@ class SmartButton(Button):
         return info
 
     def change_info_configuration(
-            self, name, group, friendly_name
+            self, name, group
     ):
         """Change the Configuration."""
         full_url = self.panel.url
@@ -55,7 +55,7 @@ class SmartButton(Button):
             "type": "zeptrion_Air",
             "name": name,
             "group": group,
-            "friendly_name": friendly_name,
+            "friendly_name": name,
             "id": self._storage,
             "cat": '17'
         }
