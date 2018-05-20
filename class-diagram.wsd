@@ -1,4 +1,4 @@
-@startuml
+@startuml zeptrion_air_api
 class Hub {
     +loop
     +button_action_listen_handler
