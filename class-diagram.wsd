@@ -18,7 +18,7 @@ class Hub {
 Hub *-- ButtonActionListenerHandler : button_action_listen_handler >
 Hub *-- ZeroConfListener : _zero_conf_listener >
 Hub o-- Panel : _found_new_panels 0..* >
-Hub o-- Panel : _panels 0..* >
+Hub *-- Panel : _panels 0..* >
 
 class Button {
     -Bool _is_smt_btn
