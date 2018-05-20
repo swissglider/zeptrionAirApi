@@ -44,7 +44,7 @@ class Button {
     +listen_to(callback)
     +status_update_listener(info)
 }
-Button <.. Panel : _panel >
+Button ..> Panel : _panel >
 
 class BlindButton{
     -_blind_position
