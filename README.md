@@ -60,3 +60,6 @@ if __name__ == '__main__':
     finally:
         loop.close()
 ```
+
+### Class Diagram
+![..](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swissglider/zeptrionAirApi/master/class-diagram.wsd)
