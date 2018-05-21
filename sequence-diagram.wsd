@@ -26,8 +26,6 @@ loop__button_action_listener_task -[#9900CC]-> button_action_listener_handler: i
 activate button_action_listener_handler#init #9900CC
 create _zero_conf_listener
 hub -[#336600]> _zero_conf_listener: init(found_new_devices)
-activate _zero_conf_listener#init #336600
-deactivate _zero_conf_listener#init
 hub -[#336600]> hub: start_searching_new_devices()
 activate hub#start_searching_new_devices #336600
 hub -[#336600]> _zero_conf_listener: start_searching()
@@ -184,9 +182,17 @@ activate async_server#write_config_to_yaml_file #0000FF
 deactivate async_server#write_config_to_yaml_file
 async_server -[#0000FF]-> hub:close()
 activate hub#close #0000FF
+hub -[#0000FF]> hub:stop_searching_new_defices()
+activate hub#stop_searching_new_devices #0000FF
+hub -[#0000FF]> _zero_conf_listener:stop_searching()
+activate _zero_conf_listener#stop_searching #0000FF
+_zero_conf_listener -[#0000FF]x zeroConf_Service_Browser:cancel()
+deactivate zeroConf_Service_Browser#add_service
+deactivate _zero_conf_listener#stop_searching
+deactivate hub#stop_searching_new_devices
 hub -[#0000FF]-> button_action_listener_handler: close()
-
 deactivate hub#close
+
 activate button_action_listener_handler#close #0000FF
 button_action_listener_handler -[#0000FF]-x button_action_listener_handler: ends with set to_finish==True
 deactivate button_action_listener_handler#close
@@ -194,6 +200,8 @@ button_action_listener_handler -[#0000FF]-x loop__button_action_listener_task: e
 button_action_listener_handler -[#0000FF]> button_action_listener:close()
 deactivate button_action_listener#message_hanlder
 deactivate loop__button_action_listener_task#create_task
+button_action_listener_handler -[#0000FF]> btn_task:close()
+deactivate btn_task#create_task
 deactivate button_action_listener_handler#init
 deactivate async_server#do_close
 deactivate loop#run_until_complete

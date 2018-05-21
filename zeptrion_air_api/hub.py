@@ -44,7 +44,7 @@ class Hub:
         # start searching new zeptrionAir devices
         self._zero_conf_listener.start_searching()
 
-    def stop_searching_new_defices(self):
+    def stop_searching_new_devices(self):
         """Stop searching new devices with zeroconf."""
         self._zero_conf_listener.stop_searching()
 
@@ -72,4 +72,5 @@ class Hub:
 
     async def close(self):
         """Close the Button Action listen handler."""
+        self.stop_searching_new_devices()
         await self.button_action_listen_handler.close()
