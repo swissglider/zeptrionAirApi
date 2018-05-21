@@ -138,7 +138,6 @@ class Button:
     def listen_to(self, callback):  # pylint: disable=protected-access
         """Register button to listen for update change."""
         self._status_update_callback = callback
-        self.panel._start_listen_to_button_pressed()
 
     def status_update_listener(self, info):
         """Listen to the callback for the button pressed events."""

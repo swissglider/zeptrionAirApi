@@ -35,11 +35,11 @@ class Panel:  # pylint: disable=too-many-instance-attributes
         self._is_smart_panel = False
         # only for smart buttons
         self._storage_place = ['a', 'c', 'e', 'g', 'i', 'k', 'm', 'o']
-        self._read_smart_panel_info()
-        self._read_button()
         self.loop = loop
         self.button_action_listen_handler = button_action_listen_handler
-        self.is_listening_for_status_update = False
+        self._read_smart_panel_info()
+        self._read_button()
+        self._start_listen_to_button_pressed()
 
     @property
     def name(self):
@@ -160,15 +160,13 @@ class Panel:  # pylint: disable=too-many-instance-attributes
 
     def _start_listen_to_button_pressed(self):
         """
-        Register all Buttons and start listening to pressed buttons.
+        Register the panel to listening to pressed buttons.
 
         If Button pressed, the callback will be called
         """
-        if not self.is_listening_for_status_update:
-            self.button_action_listen_handler.register_new_listener(
-                self, self.button_pressed_listener
-            )
-            self.is_listening_for_status_update = True
+        self.button_action_listen_handler.register_new_listener(
+            self, self.button_pressed_listener
+        )
 
     def button_pressed_listener(self, info):
         """Listen to the pressed buttons."""
