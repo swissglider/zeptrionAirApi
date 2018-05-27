@@ -24,7 +24,7 @@ class Button:
                 :info['cat']
                     --> -1 unused
                     -->  1 light on/of
-                    -->  3 light dimmible
+                    -->  3 light dimmable
                     -->  5 blind
                     -->  6 Markise
                     --> 17 Smart Btn
@@ -70,9 +70,20 @@ class Button:
     @property
     def type(self):
         """Return the Type from the channel."""
-        if self._info['type']:
-            return self._info['type']
-        return None
+        if self.cat == -1:
+            return 'unused'
+        elif self.cat == 1:
+            return 'light on/of'
+        elif self.cat == 3:
+            return 'light dimmable'
+        elif self.cat == 5:
+            return 'blind'
+        elif self.cat == 6:
+            return 'Markise'
+        elif self.cat == 17:
+            return 'Smart Btn'
+        else:
+            return 'unknown'
 
     @property
     def cat(self):

@@ -127,7 +127,7 @@ class Panel:  # pylint: disable=too-many-instance-attributes
                 channel_info['name'] = channel_xml[0].text
                 channel_info['group'] = channel_xml[1].text
                 channel_info['icon'] = channel_xml[2].text
-                channel_info['typ'] = channel_xml[3].text
+                channel_info['type'] = channel_xml[3].text
                 channel_info['cat'] = channel_xml[4].text
                 channel_info['friendly_name'] = channel_info['name']
                 if channel_info['cat'] == '1':  # Light On/Off
